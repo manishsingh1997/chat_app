@@ -1,0 +1,10 @@
+.idea/
+*.py[cgo]
+__pycache__
+*.json
+*.log
+*.txt
+*.sql*
+*.lock
+*.env
+trading-agent/seeds/*
