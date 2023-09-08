@@ -25,7 +25,6 @@ def verify_password(password: str, hashed_pass: str) -> bool:
 
 
 def create_access_token(subject: Union[str, Any], expires_delta: int= None) -> str:
-    print("++++++++++=",subject)
     if expires_delta is not None:
         expires_delta = datetime.utcnow() + expires_delta
     else:

@@ -24,3 +24,12 @@ class TokenCreate(BaseModel):
     refresh_token:str
     status:bool
     created_date:datetime.datetime
+    
+class AddFriend(BaseModel):
+    email: str
+    userEmail: str
+    
+class SendMessage(BaseModel):
+    email: str
+    userEmail: str
+    message:str
