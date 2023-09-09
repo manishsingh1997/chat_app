@@ -14,6 +14,7 @@ from sqlalchemy.orm import Session
 from fastapi import FastAPI, Depends, HTTPException, status, WebSocket, WebSocketDisconnect
 from fastapi.security import OAuth2PasswordBearer
 from authbearer import JWTBearer
+from fastapi.middleware.cors import CORSMiddleware
 from functools import wraps
 from dotenv import load_dotenv
 from utils import create_access_token, create_refresh_token, verify_password, get_hashed_password
@@ -41,6 +42,19 @@ def get_session():
 
 
 app = FastAPI()
+
+CORS_ORIGINS = [    
+    "http://localhost",      
+    "http://localhost:5173",
+    ]
+
+app.add_middleware(    
+    CORSMiddleware,    
+    allow_origins=CORS_ORIGINS,  
+    allow_credentials=True, 
+    allow_methods=["*"],  
+    allow_headers=["*"],
+    )
 
 
 @app.post('/register')
