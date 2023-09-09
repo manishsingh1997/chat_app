@@ -1,5 +1,8 @@
 import os
+import subprocess
 import schema
+import logging
+import re
 import jwt
 from datetime import datetime
 from models import User, TokenTable
@@ -58,7 +61,6 @@ def register(user: schema.UserCreate, session: Session = Depends(get_session)):
 @app.post('/login', response_model=schema.TokenSchema)
 def login(request: schema.requestdetails, db: Session = Depends(get_session)):
     user = db.query(User).filter(User.email == request.email).first()
-    print("++++++++++++++++++++>", user.email)
     if user is None:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST, detail="Incorrect email")
@@ -151,6 +153,60 @@ def logout(dependencies=Depends(JWTBearer()), db: Session = Depends(get_session)
         db.refresh(existingToken)
 
     return {"message": "Login successfully"}
+
+
+@app.post('/addFriend')
+def addFriend(request: schema.AddFriend, session: Session = Depends(get_session)):
+    email = request.email
+    env = os.environ.copy()
+    userEmail = request.userEmail
+    user = session.query(User).all()
+    for record in user:
+            if record.email == email:
+                log_file_name = f"{email}.log"
+                log_file_path = os.path.join(os.getcwd(), log_file_name)
+                second_log_file_name = f"{userEmail}.log"
+                second_log_file_path = os.path.join(os.getcwd(), second_log_file_name)
+
+                with open(log_file_path, 'w') as log_file, open(second_log_file_path, 'w') as second_log_file:
+                    return True 
+                
+               
+
+@app.post('/sendMessage')
+def addFriend(request: schema.SendMessage, session: Session = Depends(get_session)):
+    email = request.email
+    userEmail = request.userEmail
+    message = request.message
+    user = session.query(User).all()
+    
+    email_without_domain=re.sub(r'@gmail\.com$', '', email)
+    user_email_without_domain=re.sub(r'@gmail\.com$', '', userEmail)
+
+    
+    log_file_name = f"{email}.log"
+    logger1 = logging.getLogger('logger1')
+    logger1.setLevel(logging.INFO)
+    
+    if not logger1.hasHandlers():
+        handler1 = logging.FileHandler(log_file_name)
+        formatter1 = logging.Formatter('%(message)s')
+        handler1.setFormatter(formatter1)
+        logger1.addHandler(handler1)
+    
+    second_log_file_name = f"{userEmail}.log"
+    logger2 = logging.getLogger('logger2')
+    logger2.setLevel(logging.INFO)
+    if not logger2.hasHandlers():
+        handler2 = logging.FileHandler(second_log_file_name)
+        formatter2 = logging.Formatter('%(message)s')
+        handler2.setFormatter(formatter2)
+        logger2.addHandler(handler2)
+        
+    for record in user:
+            if record.email == email:
+                logger1.info(f'{email_without_domain}: {message}')
+                logger2.info(f'{user_email_without_domain}: {message}')
 
 
 if __name__ == "__main__":
