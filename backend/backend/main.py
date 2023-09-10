@@ -1,14 +1,17 @@
 import os
 import subprocess
+import asyncio
+import json
 import schema
 import logging
 import re
 import jwt
+import websockets.exceptions
 from datetime import datetime
 from models import User, TokenTable
 from database import Base, engine, SessionLocal
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, WebSocket, WebSocketDisconnect
 from fastapi.security import OAuth2PasswordBearer
 from authbearer import JWTBearer
 from functools import wraps
@@ -207,6 +210,35 @@ def addFriend(request: schema.SendMessage, session: Session = Depends(get_sessio
             if record.email == email:
                 logger1.info(f'{email_without_domain}: {message}')
                 logger2.info(f'{user_email_without_domain}: {message}')
+                
+
+@app.websocket("/messages")
+async def ws_read_message(websocket: WebSocket):
+    try:
+        await websocket.accept()
+        request = await websocket.receive_json()
+        emailId = request['email']        
+        while True:
+            try:
+                with open(f"./{emailId}.log", "r") as file:
+                    
+                    content = file.read()
+                    
+                    lines = content.splitlines()
+                    await websocket.send_json(json.dumps(lines))
+                    await asyncio.sleep(3)
+            except websockets.exceptions.ConnectionClosedOK:
+                pass
+            await asyncio.sleep(3)
+            
+    except FileNotFoundError:
+        await websocket.send_json(json.dumps([]))
+        
+    except WebSocketDisconnect:
+        await websocket.close()
+    except HTTPException as e:
+        await websocket.send_json({e.status_code: e.detail})
+        await websocket.close()
 
 
 if __name__ == "__main__":
