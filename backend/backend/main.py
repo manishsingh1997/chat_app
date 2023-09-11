@@ -1,14 +1,17 @@
 import os
 import subprocess
+import asyncio
+import json
 import schema
 import logging
 import re
 import jwt
+import websockets.exceptions
 from datetime import datetime
 from models import User, TokenTable
 from database import Base, engine, SessionLocal
 from sqlalchemy.orm import Session
-from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi import FastAPI, Depends, HTTPException, status, WebSocket, WebSocketDisconnect
 from fastapi.security import OAuth2PasswordBearer
 from authbearer import JWTBearer
 from functools import wraps
@@ -180,8 +183,8 @@ def addFriend(request: schema.SendMessage, session: Session = Depends(get_sessio
     message = request.message
     user = session.query(User).all()
     
-    email_without_domain=re.sub(r'@gmail\.com$', '', email)
-    user_email_without_domain=re.sub(r'@gmail\.com$', '', userEmail)
+    # email_without_domain=re.sub(r'@gmail\.com$', '', email)
+    # user_email_without_domain=re.sub(r'@gmail\.com$', '', userEmail)
 
     
     log_file_name = f"{email}.log"
@@ -205,8 +208,72 @@ def addFriend(request: schema.SendMessage, session: Session = Depends(get_sessio
         
     for record in user:
             if record.email == email:
-                logger1.info(f'{email_without_domain}: {message}')
-                logger2.info(f'{user_email_without_domain}: {message}')
+                logger1.info(f'{email}: {message}')
+                logger2.info(f'{userEmail}: {message}')
+                
+
+@app.websocket("/messages")
+async def ws_read_message(websocket: WebSocket):
+    try:
+        await websocket.accept()
+        request = await websocket.receive_json()
+        emailId = request['email']        
+        while True:
+            try:
+                with open(f"./{emailId}.log", "r") as file:
+                    
+                    content = file.read()
+                    
+                    lines = content.splitlines()
+                    await websocket.send_json(json.dumps(lines))
+                    await asyncio.sleep(3)
+            except websockets.exceptions.ConnectionClosedOK:
+                pass
+            await asyncio.sleep(3)
+            
+    except FileNotFoundError:
+        await websocket.send_json(json.dumps([]))
+        
+    except WebSocketDisconnect:
+        await websocket.close()
+    except HTTPException as e:
+        await websocket.send_json({e.status_code: e.detail})
+        await websocket.close()
+        
+        
+@app.websocket("/users")
+async def users(websocket: WebSocket):
+    try:
+        await websocket.accept()
+        request = await websocket.receive_json()
+        email = request['email']
+        usersData = []
+        while True:
+            try:
+                with open(f"./{email}.log", "r") as file:           
+                    content = file.read()     
+                    lines = content.splitlines()
+                    for line in lines:
+                        parts = line.split(":")
+                        if len(parts) == 2:
+                            key = parts[0]
+                            if key != email:
+                                usersData.append(key)
+                    await asyncio.sleep(2)
+                    await websocket.send_json(json.dumps(list(set(usersData)))) 
+            except websockets.exceptions.ConnectionClosedOK:
+                pass
+            await asyncio.sleep(3)
+        
+    except FileNotFoundError:
+        await websocket.send_json(json.dumps([]))
+        
+    except WebSocketDisconnect:
+        await websocket.close()
+    except HTTPException as e:
+        await websocket.send_json({e.status_code: e.detail})
+        await websocket.close()
+    
 
 
 if __name__ == "__main__":
