@@ -1,0 +1,30 @@
+
+.maincontainer{
+    width: 100%;
+    margin-top: 20px;
+    
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.maincontainer img{
+    height: 50px;
+    margin-right: 20px;
+}
+h2{
+    font-size: 50px;
+    color: #ffffff;
+    padding: 20px;
+}
+.clickicon{
+    position:absolute;
+    right: 40px;
+    
+}
+.clickicon p{
+    color: #ffffff;
+    margin: 3px;
+    font-size: 20px;
+    cursor: pointer;
+    
+}

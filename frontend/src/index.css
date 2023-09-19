@@ -1,4 +1,4 @@
-:root {
+/* :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -66,4 +66,8 @@ button:focus-visible {
   button {
     background-color: #f9f9f9;
   }
+} */
+body{
+    background-image: url("https://media.istockphoto.com/id/1199145990/vector/email-and-sms-marketing-concept-scheme-of-direct-sales-in-business-list-of-clients-for.jpg?s=612x612&w=0&k=20&c=3meOnDkM3816BDRSxKufEnH5m1V_U9DG1fmbi748Ou8=");
+    background-size: cover;
 }

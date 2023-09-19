@@ -1,38 +1,22 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import apiData from "../api /Apidata";
 
-function Logout({ respo }) {
+function Logout() {
   const navigation = useNavigate();
-
   const data = localStorage.getItem("token");
-  console.log(data);
-
-  const logOutHandel = (e) => {
+  const url = "http://127.0.0.1:8000/logout";
+  const logOutHandel = async (e) => {
     e.preventDefault();
-    apiData();
+    localStorage.clear()
+    await apiData(url, "", data);
     navigation("/");
   };
 
-  async function apiData() {
-    await axios
-      .post(
-        "http://127.0.0.1:8000/logout",
-        {},
-        {
-          headers: {
-            Accept: "application/json",
-            Authorization: `Bearer ${data}`,
-          },
-        }
-      )
-      .then((response) => console.log(response.data))
-      .catch((err) => console.log(err));
-  }
   return (
     <div>
       <button onClick={() => logOutHandel(event)}>Logout</button>
-      <button onClick={()=>navigation("/passwordchange")}> change password</button>
+   
     </div>
   );
 }
