@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import apiData from "../api /Apidata";
 import Getapi from "../api /Getapi";
-import {WebSocketData} from "../api /Websocket"
+
+import WebSocketData from "../../websocket";
 
 import "./chat.css";
 
@@ -9,7 +10,8 @@ function Chat() {
   const [friend, setFriend] = useState(false);
   const [useremail, setUseremail] = useState("");
   const [massages, setMessages] = useState("");
-  const [email,setEmail]=useState('')
+  const [email, setEmail] = useState("");
+  const [realTimeAgentData, setRealTimeAgentData] = useState([]);
   const url = "http://127.0.0.1:8000";
   const token = localStorage.getItem("token");
   const userHandel = (e) => {
@@ -19,15 +21,25 @@ function Chat() {
     setMessages(e.target.value);
   };
 
-  const [agentLogs] = WebSocketData( "users",email );
-  useEffect(()=>{
-    console.log(agentLogs);
-  },[email,agentLogs])
- 
-  
+  const [data] = WebSocketData("users", email);
+
+  const handleData = useCallback(() => {
+    if (data) {
+      setRealTimeAgentData([...realTimeAgentData, JSON.parse(data)]);
+    }
+  }, [data, email]);
+
+  useEffect(() => {
+    if (data) {
+      handleData();
+    }
+  }, [data, email]);
+
+  console.log(realTimeAgentData);
+
   const addFriend = async () => {
     const data = await Getapi(`${url}/getUser`, token);
-    setEmail(data.email)
+    setEmail(data.email);
     const response = await Getapi(`${url}/getAllUsers`, token);
     const mailformat = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
     let filteruseremail;
