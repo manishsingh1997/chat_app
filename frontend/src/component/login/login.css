@@ -1,6 +1,6 @@
 h1{
     font-weight: 900;
-    font-size: 100px;
+    font-size: 90px;
     color: #ffffff;
 }
 .logincontainer{
@@ -9,7 +9,7 @@ h1{
     align-items: center;
     
 }
-.logincontainer form{
+.loginform{
     width: 30%;
     height: 40vh;
     display: flex;
@@ -21,17 +21,18 @@ h1{
     margin-top: 20px;
 
 }
-.logincontainer div{
+.insidelogin{
     display: flex;
     flex-direction: column;
+    justify-content: center;
 }
-.logincontainer label{
+.loginlabel{
  font-size: 20px;
 margin-bottom: 5px;
 color: #ffffff;
 
 }
-.logincontainer input{
+.logininput{
     font-size: 20px;
     padding: 2px;
     border: none; 
@@ -40,7 +41,7 @@ color: #ffffff;
     margin-bottom: 10px;
     color: #ffffff;
 }
-.logincontainer button{
+.loginbtn{
 font-size: 20px;
 width: 80px;
 background: transparent;
@@ -48,7 +49,48 @@ border-radius: 10px;
 padding: 10px;
 margin-top: 20px;
 }
-.logincontainer p{
+.loginpara{
     font-size: 20px;
     margin-top: 20px;
 }
+/* responsive */
+
+  @media (max-width:1050px) {
+    .loginform{
+      width: 40%;
+    }  
+    .loginheading{
+        font-size: 80px;
+     }
+   
+  }
+  @media (max-width:700px) {
+    .loginform{
+      width: 65%;
+    } 
+     .loginlabel{
+        font-size: 18px;
+     }
+     .logininput{
+        font-size: 18px;
+     } 
+     .loginheading{
+        font-size: 60px;
+     }
+   
+  }
+  @media (max-width:400px) {
+    .loginform{
+        width: 80%;
+    } 
+     .loginlabel{
+        font-size: 15px;
+     }
+     .logininput{
+        font-size: 15px;
+     }
+     .loginheading{
+        font-size: 40px;
+     }
+    }
+  

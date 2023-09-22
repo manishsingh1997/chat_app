@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./navbar.css";
 import photo from "../assets/human.png";
+import apiData from "../api /Apidata";
 
 function Navbar() {
   const navigation = useNavigate();
@@ -17,24 +18,31 @@ function Navbar() {
 
   return (
     <div className="maincontainer">
-      <h2 onClick={() => navigation("/")}>CHAT APP</h2>
+      <h2 className="navheading" onClick={() => navigation("/")}>
+        CHAT APP
+      </h2>
       <div>
-        <img src={photo} alt="icon" onClick={() => setIsEnable(!isEnable)} />
+        <img
+          className="navimage"
+          src={photo}
+          alt="icon"
+          onClick={() => setIsEnable(!isEnable)}
+        />
         {isEnable && (
           <div className="clickicon">
             {data ? (
               <div>
                 {" "}
-                <p>Name</p>
-                <p onClick={() => navigation("/changepassword")}>
+                <p className="navpara">Name</p>
+                <p className="navpara" onClick={() => navigation("/changepassword")}>
                   Change Password
                 </p>
-                <p onClick={() => logOutHandel(event)}>Logout</p>
+                <p className="navpara" onClick={() => logOutHandel(event)}>Logout</p>
               </div>
             ) : (
               <div>
-                <p onClick={() => navigation("/sigup")}>sigup</p>
-                <p onClick={() => navigation("/")}>Login</p>
+                <p className="navpara" onClick={() => navigation("/sigup")}>sigup</p>
+                <p className="navpara" onClick={() => navigation("/")}>Login</p>
               </div>
             )}
           </div>

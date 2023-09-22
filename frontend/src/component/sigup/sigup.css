@@ -3,7 +3,7 @@
     flex-direction: column;
     align-items: center;
 }
-.sigupcontainer form{
+.sigupform{
     width: 32%;
     height: 60vh;
     display: flex;
@@ -15,17 +15,17 @@
     margin-top: 20px;
 
 }
-.sigupcontainer div{
+.insidesigup{
     display: flex;
     flex-direction: column;
 }
-.sigupcontainer  label{
+.signuplabel{
 font-size: 20px;
 margin-bottom: 10px;
 color: #ffffff;
 
 }
-.sigupcontainer input{
+.sigupinput{
     color: #ffffff;
     font-size: 20px;
     padding: 2px;
@@ -34,7 +34,7 @@ color: #ffffff;
     border-bottom: 1px solid black;
     margin-bottom: 10px;
 }
-.sigupcontainer button{
+.sigupbtn{
     font-size: 20px;
     width: 80px;
     background: transparent;
@@ -42,7 +42,50 @@ color: #ffffff;
     padding: 10px;
     margin-top: 20px;
 }
-.sigupcontainer p{
+.siguppara{
         font-size: 20px;
         margin-top: 20px;
+    }
+.error{
+        margin-left: 20px;
+        color: red;
+    }
+
+  @media (max-width:1050px) {
+    .sigupform{
+      width: 40%;
+    }  
+    .sigupheading{
+        font-size: 80px;
+     }
+   
+  }
+  @media (max-width:700px) {
+    .sigupform{
+      width: 65%;
+    } 
+     .siguplabel{
+        font-size: 18px;
+     }
+     .sigupinput{
+        font-size: 18px;
+     } 
+     .sigupheading{
+        font-size: 60px;
+     }
+   
+  }
+  @media (max-width:400px) {
+    .sigupform{
+        width: 80%;
+    } 
+     .siguplabel{
+        font-size: 15px;
+     }
+     .sigupinput{
+        font-size: 15px;
+     }
+     .sigupheading{
+        font-size: 40px;
+     }
     }

@@ -1,6 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import apiData from "../api /Apidata";
 import { useNavigate } from "react-router-dom";
+// import WebSocket from "../api /Websocket";
+// import WebSocketComponent  from "../websocket/Websocket"
 import "./login.css";
 
 function Login() {
@@ -14,40 +16,40 @@ function Login() {
   const passwordHandel = (e) => {
     setPassword(e.target.value);
   };
-  const url = "http://127.0.0.1:8000/login";
+  const url = "http://127.0.0.1:8000";
   const loginHandel = async (e) => {
     e.preventDefault();
-    const token = await apiData(url, {
-      // sand data to api
+    const token = await apiData(`${url}/login`, {
       email: email,
       password: password,
     });
-    if (token) {
-      handletoken(token);
-    }
+ 
+    handletoken(token);
   };
-  // if the  api data is present then run
   function handletoken(params) {
-    localStorage.setItem("token", params.access_token); //  sand data to local storage
-    navigation("/chat"); // navigate to logout page
+    localStorage.setItem("token", params.access_token);
+    navigation("/chat");
     setEmail("");
     setPassword("");
+    // {<WebSocketComponent/>}
   }
   return (
     <div className="logincontainer">
-      <h1>Login </h1>
-      <form onSubmit={() => loginHandel(event)}>
-        <div>
-          <label> Username</label>
+      <h1 className="loginheading">Login </h1>
+      <form className="loginform" onSubmit={() => loginHandel(event)}>
+        <div className="insidelogin">
+          <label className="loginlabel"> Username</label>
           <input
+            className="logininput"
             type="text"
             placeholder="Enter user name "
             value={email}
             onChange={() => emailHandel(event)}
           />
 
-          <label>Password </label>
+          <label className="loginlabel">Password </label>
           <input
+            className="logininput"
             type="password"
             placeholder="Enter your password"
             autoComplete="on"
@@ -55,8 +57,8 @@ function Login() {
             onChange={() => passwordHandel(event)}
           />
         </div>
-        <button type="sumbit"> login</button>
-        <p>
+        <button className="loginbtn" type="sumbit"> login</button>
+        <p className="loginpara">
           Not a user ? <span onClick={() => navigation("/sigup")}>sigup</span>{" "}
         </p>
       </form>
