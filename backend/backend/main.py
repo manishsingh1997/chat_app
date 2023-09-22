@@ -191,7 +191,7 @@ def addFriend(request: schema.AddFriend, session: Session = Depends(get_session)
                
 
 @app.post('/sendMessage')
-def addFriend(request: schema.SendMessage, session: Session = Depends(get_session)):
+def sendMessage(request: schema.SendMessage, session: Session = Depends(get_session)):
     email = request.email
     userEmail = request.userEmail
     message = request.message
@@ -222,8 +222,8 @@ def addFriend(request: schema.SendMessage, session: Session = Depends(get_sessio
         
     for record in user:
             if record.email == email:
-                logger1.info(f'{email}: {message}')
-                logger2.info(f'{userEmail}: {message}')
+                logger1.info(f'{userEmail}: {message}')
+                logger2.info(f'{email}: {message}')
                 
 
 @app.websocket("/messages")
@@ -261,6 +261,7 @@ async def users(websocket: WebSocket):
         await websocket.accept()
         request = await websocket.receive_json()
         email = request['email']
+        print(email)
         usersData = []
         while True:
             try:
@@ -268,19 +269,17 @@ async def users(websocket: WebSocket):
                     content = file.read()     
                     lines = content.splitlines()
                     for line in lines:
+                        
                         parts = line.split(":")
                         if len(parts) == 2:
                             key = parts[0]
                             if key != email:
                                 usersData.append(key)
-                    await asyncio.sleep(2)
                     await websocket.send_json(json.dumps(list(set(usersData)))) 
+                    await asyncio.sleep(2)
             except websockets.exceptions.ConnectionClosedOK:
-                pass
+                print("connction close")
             await asyncio.sleep(3)
-        
-    except FileNotFoundError:
-        await websocket.send_json(json.dumps([]))
         
     except WebSocketDisconnect:
         await websocket.close()
