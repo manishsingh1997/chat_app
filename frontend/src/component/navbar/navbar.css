@@ -1,0 +1,45 @@
+.maincontainer{
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.navimage{
+    height: 50px;
+    margin-right: 20px;
+}
+.navheading{
+    font-size: 50px;
+    color: #ffffff;
+    padding: 20px;
+}
+.clickicon{
+    position:absolute;
+    right: 20px;
+    
+}
+.navpara{
+    color: #ffffff;
+    margin: 2px;
+    font-size: 20px;
+    cursor: pointer;
+    
+}
+@media (max-width:700px) {
+    .navheading{
+        font-size: 30px;
+    }
+}
+
+
+
+
+
+
+
+@media (max-width :400px) {
+    .navheading{
+        font-size: 20px;
+    }
+}

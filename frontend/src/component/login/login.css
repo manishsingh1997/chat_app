@@ -1,0 +1,96 @@
+h1{
+    font-weight: 900;
+    font-size: 90px;
+    color: #ffffff;
+}
+.logincontainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.loginform{
+    width: 30%;
+    height: 40vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: rgb(17, 5, 107);
+    align-items: center;
+    border-radius: 12px;
+    margin-top: 20px;
+
+}
+.insidelogin{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.loginlabel{
+ font-size: 20px;
+margin-bottom: 5px;
+color: #ffffff;
+
+}
+.logininput{
+    font-size: 20px;
+    padding: 2px;
+    border: none; 
+    background: transparent;
+    border-bottom: 1px solid black;
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+.loginbtn{
+font-size: 20px;
+width: 80px;
+background: transparent;
+border-radius: 10px;
+padding: 10px;
+margin-top: 20px;
+}
+.loginpara{
+    font-size: 20px;
+    margin-top: 20px;
+}
+/* responsive */
+
+  @media (max-width:1050px) {
+    .loginform{
+      width: 40%;
+    }  
+    .loginheading{
+        font-size: 80px;
+     }
+   
+  }
+  @media (max-width:700px) {
+    .loginform{
+      width: 65%;
+    } 
+     .loginlabel{
+        font-size: 18px;
+     }
+     .logininput{
+        font-size: 18px;
+     } 
+     .loginheading{
+        font-size: 60px;
+     }
+   
+  }
+  @media (max-width:400px) {
+    .loginform{
+        width: 80%;
+    } 
+     .loginlabel{
+        font-size: 15px;
+     }
+     .logininput{
+        font-size: 15px;
+     }
+     .loginheading{
+        font-size: 40px;
+     }
+    }
+  
